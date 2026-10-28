@@ -1,0 +1,173 @@
+<section class="kgs-payment" dir="rtl">
+<h2>🔥 KEVIN GAME STORE 💎</h2>
+<h3>إتمام طلب الشحن</h3>
+<label for="kgs-id">ID اللاعب</label>
+<input id="kgs-id" placeholder="اكتب ID فري فاير">
+<label for="kgs-type">نوع الشحن</label>
+<select id="kgs-type">
+<option value="">اختار نوع الشحن</option>
+<option value="account">شحن على الأكونت</option>
+<option value="id">شحن عن طريق ID</option>
+<option value="membership">العضويات</option>
+</select>
+<label for="kgs-package">الباقة</label>
+<select id="kgs-package">
+<option value="">اختار الباقة</option>
+</select>
+<h3 id="kgs-price">السعر: —</h3>
+<label for="kgs-payment">طريقة الدفع</label>
+<select id="kgs-payment">
+<option value="">اختار طريقة الدفع</option>
+<option value="vodafone">فودافون كاش</option>
+<option value="instapay">InstaPay</option>
+</select>
+<div id="kgs-payment-info" hidden>
+<p id="kgs-payment-name"></p>
+<p id="kgs-payment-number"></p>
+<p>حوّل قيمة الطلب، ثم ارفع صورة الإيصال بالأسفل.</p>
+</div>
+<label for="kgs-receipt">صورة التحويل</label>
+<input id="kgs-receipt" type="file" accept="image/*">
+<p id="kgs-file-name">لم يتم اختيار صورة</p>
+
+<p id="kgs-message" role="status"></p>
+</section>
+<style>
+.kgs-payment {
+max-width: 460px;
+margin: 25px auto;
+padding: 22px;
+border: 1px solid #a855f7;
+border-radius: 18px;
+background: #171322;
+color: white;
+font-family: Arial, sans-serif;
+}
+.kgs-payment h2 { color: #d8b4fe; text-align: center; }
+.kgs-payment label { display:block; margin:14px 0 7px; }
+.kgs-payment input, .kgs-payment select {
+box-sizing: border-box;
+width: 100%;
+padding: 12px;
+border-radius: 8px;
+border: 1px solid #a78bfa;
+background: white;
+color: #171322;
+}
+.kgs-payment button {
+width:100%;
+padding:13px;
+margin-top:12px;
+border:0;
+border-radius:9px;
+background:#7c3aed;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+#kgs-payment-info {
+background:#29213a;
+padding:12px;
+margin-top:12px;
+border-radius:10px;
+}
+#kgs-message { overflow-wrap:anywhere; }
+</style>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+// الأسعار بالجنيه المصري
+const prices = {
+account: [
+["100 جوهرة", 50],
+["310 جوهرة", 150],
+["520 جوهرة", 230],
+["1060 جوهرة", 385],
+["2180 جوهرة", 770],
+["5600 جوهرة", 1900]
+],
+id: [
+["100 جوهرة", 60],
+["210 جوهرة", 120],
+["310 جوهرة", 180],
+["520 جوهرة", 300],
+["1060 جوهرة", 600],
+["2200 جوهرة", 1200]
+],
+membership: [
+["عضوية أسبوعية", 90],
+["عضوية شهرية", 385]
+]
+};
+// استبدل النصوص ببيانات استقبال الدفع الحقيقية
+const paymentInfo = {
+vodafone: {
+name: "فودافون كاش",
+number: "اكتب رقم فودافون كاش هنا"
+},
+instapay: {
+name: "InstaPay",
+number: "اكتب عنوان InstaPay هنا"
+}
+};
+let selectedPrice = 0;
+let selectedPackage = "";
+$("kgs-type").addEventListener("change", () => {
+const type = $("kgs-type").value;
+const select = $("kgs-package");
+select.innerHTML = '<option value="">اختار الباقة</option>';
+selectedPrice = 0;
+selectedPackage = "";
+$("kgs-price").textContent = "السعر: —";
+(prices[type] || []).forEach(([name, price]) => {
+const option = document.createElement("option");
+option.value = name;
+option.textContent = `${name} — ${price} جنيه`;
+option.dataset.price = price;
+select.appendChild(option);
+});
+});
+$("kgs-package").addEventListener("change", () => {
+const option = $("kgs-package").selectedOptions[0];
+selectedPrice = Number(option?.dataset.price || 0);
+selectedPackage = option?.value || "";
+$("kgs-price").textContent =
+selectedPrice ? `السعر: ${selectedPrice} جنيه` : "السعر: —";
+});
+$("kgs-payment").addEventListener("change", () => {
+const info = paymentInfo[$("kgs-payment").value];
+$("kgs-payment-info").hidden = !info;
+if (!info) return;
+$("kgs-payment-name").textContent = info.name;
+$("kgs-payment-number").textContent = info.number;
+});
+
+$("kgs-receipt").addEventListener("change", () => {
+const file = $("kgs-receipt").files[0];
+$("kgs-file-name").textContent = file
+? "الصورة المختارة: " + file.name
+: "لم يتم اختيار صورة";
+});
+$("kgs-submit").addEventListener("click", () => {
+const playerId = $("kgs-id").value.trim();
+const method = $("kgs-payment").value;
+const receipt = $("kgs-receipt").files[0];
+if (!playerId || !selectedPackage || !selectedPrice || !method || !receipt) {
+$("kgs-message").textContent =
+"من فضلك اكتب ID اللاعب واختر الباقة وطريقة الدفع وارفع صورة التحويل.";
+return;
+}
+if (!/^\d+$/.test(playerId)) {
+$("kgs-message").textContent = "تأكد من كتابة ID اللاعب بشكل صحيح.";
+return;
+}
+if (!receipt.type.startsWith("image/") || receipt.size > 5 * 1024 * 1024) {
+$("kgs-message").textContent =
+"ارفع صورة فقط، وحجمها لا يزيد عن 5 ميجابايت.";
+return;
+}
+$("kgs-message").textContent =
+"الواجهة جاهزة، لكن حفظ الطلب وصورة التحويل لم يُربطا بقاعدة بيانات Firebase بعد. لا تعتبر الطلب مُرسلًا قبل إتمام الربط.";
+});
+})();
+</script>

@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+match /databases/{database}/documents {
+function isAdmin() {
+return request.auth != null
+&& request.auth.token.email in [
+"REPLACE_WITH_YOUR_ADMIN_EMAIL"
+];
+}
+match /orders/{orderId} {
+// Orders can be created without login, but customers cannot read/list/update them.
+allow create: if request.auth == null
+&& request.resource.data.keys().hasOnly([
+"orderNumber","service","packageId","packageLabel","amount",
+"playerName","playerId","contact","notes","paymentMethod",
+"status","proofPath","createdAt"
+])
+&& request.resource.data.orderNumber is string
+&& request.resource.data.orderNumber.size() >= 8
+&& request.resource.data.playerName is string
+&& request.resource.data.playerName.size() > 0
+&& request.resource.data.contact is string
+&& request.resource.data.contact.size() > 0
+&& request.resource.data.amount is number
+&& request.resource.data.amount > 0
+&& request.resource.data.status == "pending_review";
+allow read, update, delete: if isAdmin();
+}
+}
+}

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#100b20">
+<meta name="description" content="KEVIN GAME STORE - متجر شحن فري فاير والجواهر والعضويات والحسابات.">
+<title>KEVIN GAME STORE | متجر فري فاير</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="topbar">
+<a class="brand" href="#home" aria-label="الرئيسية">
+<span class="brand-mark">K</span>
+<span><b>KEVIN</b><small>GAME STORE</small></span>
+</a>
+<button id="installBtn" class="install hidden" type="button">تثبيت المتجر</button>
+</header>
+<main>
+<section class="hero" id="home">
+<div class="hero-glow"></div>
+<p class="eyebrow">YOUR GAMING STORE</p>
+<h1>اشحن لعبتك.<br><span>وارفع مستواك.</span></h1>
+<p class="hero-copy">جواهر فري فاير، عضويات، عروض وحسابات — اطلب بسهولة من موبايلك.</p>
+<a class="primary-btn" href="#services">اكتشف المتجر <span>←</span></a>
+<div class="hero-tags"><span>💎 جواهر</span><span>⚡ طلب واتساب</span><span>🛡️ مراجعة يدوية</span></div>
+</section>
+<section class="notice">
+<span class="notice-icon">!</span>
+<div><b>تنبيه مهم</b><p>لا ترسل كلمة مرور حسابك. تأكد من الـ ID والسعر قبل التحويل. الشحن يتم بعد مراجعة الدفع يدويًا.</p></div>
+</section>
+<section class="section" id="services">
+<div class="section-heading"><div><p class="eyebrow">STORE CATEGORIES</p><h2>اختار القسم</h2></div><span class="live-dot">متاح للطلبات</span></div>
+<div class="category-grid">
+<button class="category-card active" data-category="account"><span class="category-icon">💎</span><b>شحن على الأكونت</b><small>جواهر وباقات</small></button>
+<button class="category-card" data-category="id"><span class="category-icon">🆔</span><b>شحن بالـ ID</b><small>باقات ومكافآت</small></button>
+<button class="category-card" data-category="memberships"><span class="category-icon">👑</span><b>العضويات والبطاقات</b><small>أسبوعي وشهري</small></button>
+<button class="category-card" data-category="accounts"><span class="category-icon">🎮</span><b>حسابات للبيع</b><small>تفاصيل حسب المتاح</small></button>
+<button class="category-card wide" data-category="offers"><span class="category-icon">🔥</span><span><b>العروض والخصومات</b><small>تابع أحدث العروض</small></span><span class="arrow">←</span></button>
+<button class="category-card wide" data-category="pricing"><span class="category-icon">📊</span><span><b>الأسعار والعروض</b><small>جميع الأسعار والتفاصيل</small></span><span class="arrow">←</span></button>
+</div>
+</section>
+<section class="section products-section">
+<div class="section-heading"><div><p class="eyebrow">PICK YOUR ITEM</p><h2 id="productHeading">شحن على الأكونت</h2></div><span class="muted">الأسعار قابلة للتعديل</span></div>
+<div id="products" class="products-grid"></div>
+</section>
+<section class="section order-panel" id="order">
+<div class="section-heading"><div><p class="eyebrow">ORDER DETAILS</p><h2>جهّز طلبك</h2></div><span class="step-pill">الخطوة الأخيرة</span></div>
+<form id="orderForm">
+<label for="playerId">ID اللاعب <span class="muted">(مطلوب للشحن)</span></label>
+<input id="playerId" name="playerId" inputmode="numeric" placeholder="اكتب ID اللاعب" maxlength="24">
+<label for="playerName">اسم اللاعب <span class="muted">(اختياري)</span></label>
+<input id="playerName" name="playerName" placeholder="اسمك داخل اللعبة">
+<label>طريقة الدفع</label>
+<div class="payment-options">
+<label class="pay-option"><input type="radio" name="payment" value="Vodafone Cash" checked><span>🔴 فودافون كاش</span></label>
+<label class="pay-option"><input type="radio" name="payment" value="InstaPay"><span>🟣 إنستا باي</span></label>
+</div>
+<label for="notes">ملاحظات <span class="muted">(اختياري)</span></label>
+<textarea id="notes" name="notes" rows="2" placeholder="أي تفاصيل إضافية عن الطلب"></textarea>
+<div class="selected-summary"><span>اختيارك</span><b id="selectedName">لم تختَر باقة بعد</b><strong id="selectedPrice">—</strong></div>
+<div class="payment-info">
+<h3>بيانات التحويل</h3>
+<div class="payment-methods">
+<div class="payment-method">
+<span class="method-name">فودافون كاش</span>
+<span class="method-number">اكتب رقم فودافون كاش هنا</span>
+</div>
+<div class="payment-method">
+<span class="method-name">إنستا باي</span>
+<span class="method-number">اكتب عنوان إنستا باي هنا</span>
+</div>
+</div>
+<p>حوّل قيمة الطلب، ثم ارفع صورة الإيصال بالأسفل.</p>
+</div>
+<div class="receipt-upload">
+<label for="receipt">صورة الإيصال <span class="muted">(مطلوبة)</span></label>
+<input type="file" id="receipt" name="receipt" accept="image/*" required>
+<p id="file-name">لم يتم اختيار صورة</p>
+</div>
+<button class="primary-btn full" type="submit">إرسال الطلب على واتساب <span>↗</span></button>
+
+<p class="form-footnote">إرسال الطلب لا يعني تأكيد الدفع أو تنفيذ الشحن. راجع تفاصيل الطلب مع المتجر.</p>
+</form>
+</section>
+<section class="section how">
+<p class="eyebrow">HOW IT WORKS</p><h2>بسيطة وواضحة</h2>
+<div class="steps">
+<div><span>01</span><b>اختار الخدمة</b><p>حدد الباقة أو الحساب المطلوب.</p></div>
+<div><span>02</span><b>ابعت الطلب</b><p>واتساب هيفتح برسالة جاهزة بالتفاصيل.</p></div>
+<div><span>03</span><b>أكد الدفع</b><p>انتظر مراجعة التحويل وتأكيد الشحن.</p></div>
+</div>
+</section>
+</main>
+<footer>
+<div class="brand footer-brand"><span class="brand-mark">K</span><span><b>KEVIN</b><small>GAME STORE</small></span></div>
+<p>متجر مستقل لخدمات فري فاير. لا تشارك كلمة مرورك مع أي شخص.</p>
+<a href="https://wa.me/201064836718" target="_blank" rel="noopener">تواصل مع خدمة العملاء</a>
+<small class="copyright">© <span id="year"></span> KEVIN GAME STORE</small>
+</footer>
+<nav class="mobile-nav"><a href="#home">⌂<small>الرئيسية</small></a><a href="#services">▦<small>الأقسام</small></a><a href="#order">🛒<small>اطلب الآن</small></a><a href="https://wa.me/201064836718" target="_blank" rel="noopener">☏<small>واتساب</small></a></nav>
+<script src="./app.js"></script>
+</body>
+</html>

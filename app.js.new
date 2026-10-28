@@ -1,0 +1,139 @@
+// بيانات تجريبية قابلة للتعديل. راجع الأسعار والتكلفة قبل نشر المتجر.
+const WHATSAPP_NUMBER = "201064836718";
+const catalog = {
+account: {
+title: "شحن على الأكونت",
+products: [
+{id:"a100",name:"100 جوهرة",price:50,desc:"شحن مباشر على الأكونت",icon:"💎"},
+{id:"a310",name:"310 جوهرة",price:150,desc:"شحن مباشر على الأكونت",icon:"💎"},
+{id:"a520",name:"520 جوهرة",price:230,desc:"شحن مباشر على الأكونت",icon:"💎"},
+{id:"a1060",name:"1060 جوهرة",price:385,desc:"شحن مباشر على الأكونت",icon:"💎"},
+{id:"a2180",name:"2180 جوهرة",price:770,desc:"شحن مباشر على الأكونت",icon:"💎"},
+{id:"a5600",name:"5600 جوهرة",price:1900,desc:"شحن مباشر على الأكونت",icon:"💎"}
+]
+},
+id: {
+title: "شحن بالـ ID",
+products: [
+{id:"i100",name:"100 + 10 جوهرة",price:60,desc:"شحن عن طريق ID اللاعب",icon:"🆔"},
+{id:"i210",name:"210 + 21 جوهرة",price:120,desc:"شحن عن طريق ID اللاعب",icon:"🆔"},
+{id:"i530",name:"530 + 53 جوهرة",price:300,desc:"شحن عن طريق ID اللاعب",icon:"🆔"},
+{id:"i1080",name:"1080 + 108 جوهرة",price:600,desc:"شحن عن طريق ID اللاعب",icon:"🆔"},
+{id:"i2200",name:"2200 + 220 جوهرة",price:1200,desc:"شحن عن طريق ID اللاعب",icon:"🆔"},
+{id:"i5600",name:"5600 + 560 جوهرة",price:2700,desc:"راجع السعر قبل الطلب",icon:"🆔"}
+]
+},
+memberships: {
+title: "العضويات والبطاقات",
+products: [
+{id:"weekly",name:"عضوية أسبوعية",price:90,desc:"450 جوهرة — أسبوعي",icon:"👑"},
+{id:"monthly",name:"عضوية شهرية",price:385,desc:"2600 جوهرة — شهري",icon:"👑"},
+{id:"level",name:"عضوية مستوى",price:220,desc:"تأكد من التوفر قبل الدفع",icon:"🎟️"},
+{id:"booyah",name:"Booyah Pass",price:220,desc:"تأكد من التوفر والسعر",icon:"🔥"}
+]
+},
+accounts: {
+title: "حسابات للبيع",
+products: [
+{id:"acc-contact",name:"حسابات متاحة",price:null,desc:"ابعتلنا ميزانيتك والمواصفات المطلوبة",icon:"🎮"},
+{id:"acc-sell",name:"عايز تبيع حسابك؟",price:null,desc:"التقييم بعد مراجعة تفاصيل الحساب",icon:"🔎"}
+]
+},
+offers: {
+title: "العروض والخصومات",
+products: [
+{id:"offer-current",name:"اسأل عن عروض اليوم",price:null,desc:"العروض والأسعار بتتغير حسب التوفر",icon:"🔥"},
+{id:"offer-bundle",name:"عرض خاص",price:null,desc:"ابعت الباقة اللي محتاجها ونراجع السعر",icon:"🎁"}
+]
+},
+pricing: {
+title: "الأسعار والعروض",
+products: [
+{id:"membership",name:"👑 أسعار العضويات",price:null,desc:"🗓️ أسبوعي (450💎) بـ 90 جـ<br>📅 شهري (2600💎) بـ 385 جـ",icon:"👑"},
+{id:"gems",name:"💎 أسعار الجواهر",price:null,desc:"💎 100 جوهرة بـ 50 جـ<br>💎 310 جوهرة بـ 150 جـ<br>💎 520 جوهرة بـ 230 جـ<br>💎 1060 جوهرة بـ 385 جـ<br>💎 2180 جوهرة بـ 770 جـ<br>💎 5600 جوهرة بـ 1900 جـ",icon:"💎"},
+{id:"diamonds",name:"🎁 أسعار الدروبات",price:null,desc:"🎁 دروب 16.99 بـ 40 جـ<br>🎁 دروب 49.99 (1$) بـ 55 جـ<br>🎁 دروب 99.99 (2$) بـ 100 جـ",icon:"🎁"}
+]
+}
+};
+let activeCategory = "account";
+let selectedProduct = null;
+const $ = (s) => document.querySelector(s);
+const productsEl = $("#products");
+const money = (price) => price == null ? "حسب الاتفاق" : `${price} <small>ج.م</small>`;
+function renderProducts(category) {
+activeCategory = category;
+const group = catalog[category];
+$("#productHeading").textContent = group.title;
+document.querySelectorAll(".category-card").forEach(btn => btn.classList.toggle("active", btn.dataset.category === category));
+productsEl.innerHTML = "";
+group.products.forEach(product => {
+const card = document.createElement("article");
+card.className = "product-card" + (selectedProduct?.id === product.id ? " selected" : "");
+const icon = document.createElement("div"); icon.className = "product-icon"; icon.textContent = product.icon;
+const title = document.createElement("h3"); title.textContent = product.name;
+const desc = document.createElement("p"); 
+// عرض عدد الجواهر إذا كان موجوداً
+let gemsText = "";
+if (product.name.includes("جوهرة")) {
+    // استخراج عدد الجواهر من اسم المنتج
+    const gemsMatch = product.name.match(/(\d+)\s*جوهرة/);
+    if (gemsMatch) {
+        gemsText = `💎 ${gemsMatch[1]} جوهرة`;
+    }
+}
+desc.innerHTML = `${product.desc}${gemsText ? "<br>" + gemsText : ""}`;
+const bottom = document.createElement("div"); bottom.className = "product-bottom";
+const price = document.createElement("div"); price.className = "price"; price.innerHTML = money(product.price);
+const choose = document.createElement("button"); choose.type = "button"; choose.className = "choose-btn"; choose.textContent = selectedProduct?.id === product.id ? "تم الاختيار ✓" : "اختار";
+choose.addEventListener("click", () => {
+selectedProduct = {...product, category: group.title};
+$("#selectedName").textContent = product.name;
+$("#selectedPrice").textContent = product.price == null ? "حسب الاتفاق" : `${product.price} ج.م`;
+renderProducts(activeCategory);
+$("#order").scrollIntoView({behavior:"smooth",block:"start"});
+});
+bottom.append(price, choose); card.append(icon,title,desc,bottom); productsEl.append(card);
+});
+}
+document.querySelectorAll(".category-card").forEach(btn => btn.addEventListener("click", () => renderProducts(btn.dataset.category)));
+$("#orderForm").addEventListener("submit", (event) => {
+event.preventDefault();
+if (!selectedProduct) { alert("اختار الباقة أو الخدمة الأول."); return; }
+const playerId = $("#playerId").value.trim();
+if (["account","id","memberships"].includes(activeCategory) && !playerId) {
+alert("اكتب ID اللاعب. لو اخترت خدمة لا تحتاج ID، اكتب (غير مطلوب) في خانة الملاحظات."); $("#playerId").focus(); return;
+}
+const payment = document.querySelector('input[name="payment"]:checked')?.value || "غير محدد";
+const playerName = $("#playerName").value.trim() || "غير مذكور";
+const notes = $("#notes").value.trim() || "لا توجد";
+const priceText = selectedProduct.price == null ? "يُحدد بعد التواصل" : `${selectedProduct.price} جنيه مصري`;
+const message = [
+"السلام عليكم، عايز أطلب من KEVIN GAME STORE 🎮",
+`القسم: ${selectedProduct.category}`,
+`الخدمة: ${selectedProduct.name}`,
+`السعر الظاهر: ${priceText}`,
+`Player ID: ${playerId || "غير مطلوب"}`,
+`اسم اللاعب: ${playerName}`,
+`طريقة الدفع المفضلة: ${payment}`,
+`ملاحظات: ${notes}`,
+"",
+"عارف إن الطلب غير مؤكد إلا بعد مراجعة الدفع وتأكيد المتجر."
+].join("
+");
+window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+});
+$("#year").textContent = new Date().getFullYear();
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+}
+let installPrompt;
+window.addEventListener("beforeinstallprompt", (event) => {
+event.preventDefault(); installPrompt = event; $("#installBtn").classList.remove("hidden");
+});
+$("#installBtn").addEventListener("click", async () => {
+if (!installPrompt) return;
+installPrompt.prompt();
+await installPrompt.userChoice;
+installPrompt = null; $("#installBtn").classList.add("hidden");
+});
+renderProducts("account");

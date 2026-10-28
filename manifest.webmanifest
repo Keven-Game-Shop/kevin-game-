@@ -1,0 +1,16 @@
+{
+"id": "./",
+"name": "KEVIN GAME STORE",
+"short_name": "KEVIN STORE",
+"description": "متجر شحن فري فاير والجواهر والعضويات والحسابات",
+"lang": "ar",
+"dir": "rtl",
+"start_url": "./",
+"scope": "./",
+"display": "standalone",
+"background_color": "#0b0813",
+"theme_color": "#100b20",
+"icons": [
+{"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+]
+}
